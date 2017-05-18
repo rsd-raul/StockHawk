@@ -29,25 +29,22 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        SwipeRefreshLayout.OnRefreshListener,
-        StockAdapter.StockAdapterOnClickHandler {
+                                                            SwipeRefreshLayout.OnRefreshListener,
+                                                        StockAdapter.StockAdapterOnClickHandler {
+
+    // --------------------------- VALUES ----------------------------
 
     private static final int STOCK_LOADER = 0;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.recycler_view)
-    RecyclerView stockRecyclerView;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout swipeRefreshLayout;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.error)
-    TextView error;
-    private StockAdapter adapter;
 
-    @Override
-    public void onClick(String symbol) {
-        Timber.d("Symbol clicked: %s", symbol);
-    }
+    // ------------------------- ATTRIBUTES --------------------------
+
+    //    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.recycler_view) RecyclerView stockRecyclerView;
+//    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
+//    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.error) TextView error;
+    private StockAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +77,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 getContentResolver().delete(Contract.Quote.makeUriForStock(symbol), null, null);
             }
         }).attachToRecyclerView(stockRecyclerView);
+    }
 
-
+    @Override
+    public void onClick(String symbol) {
+        Timber.d("Symbol clicked: %s", symbol);
     }
 
     private boolean networkUp() {

@@ -3,9 +3,7 @@ package com.udacity.stockhawk.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import com.udacity.stockhawk.R;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -75,5 +73,4 @@ public final class PrefUtils {
         editor.putString(key, displayMode.equals(absoluteKey) ? percentageKey : absoluteKey);
         editor.apply();
     }
-
 }

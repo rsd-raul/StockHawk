@@ -49,6 +49,7 @@ public class StockProvider extends ContentProvider {
                         Contract.Quote.COLUMN_SYMBOL + " = ?",
                         new String[]{Contract.Quote.getStockFromUri(uri)}, null, null, sortOrder);
                 break;
+
             default:
                 throw new UnsupportedOperationException("Unknown URI:" + uri);
         }

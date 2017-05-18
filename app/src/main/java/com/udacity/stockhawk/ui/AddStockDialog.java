@@ -22,15 +22,14 @@ public class AddStockDialog extends DialogFragment {
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.dialog_stock)
-    EditText stock;
+    private EditText stock;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        @SuppressLint("InflateParams") View custom = inflater.inflate(R.layout.add_stock_dialog, null);
+        @SuppressLint("InflateParams")
+        View custom = inflater.inflate(R.layout.add_stock_dialog, null);
 
         ButterKnife.bind(this, custom);
 
@@ -41,8 +40,9 @@ public class AddStockDialog extends DialogFragment {
                 return true;
             }
         });
-        builder.setView(custom);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(custom);
         builder.setMessage(getString(R.string.dialog_title));
         builder.setPositiveButton(getString(R.string.dialog_add),
                 new DialogInterface.OnClickListener() {

@@ -57,27 +57,27 @@ class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
 
     @Override
     public void onBindViewHolder(StockViewHolder holder, int position) {
-
         cursor.moveToPosition(position);
 
-        holder.symbol.setText(cursor.getString(Contract.Quote.POSITION_SYMBOL));
-        holder.price.setText(dollarFormat.format(cursor.getFloat(Contract.Quote.POSITION_PRICE)));
-
+        // Extract data from cursor
+        String symbol = cursor.getString(Contract.Quote.POSITION_SYMBOL);
+        String price = dollarFormat.format(cursor.getFloat(Contract.Quote.POSITION_PRICE));
         float rawAbsoluteChange = cursor.getFloat(Contract.Quote.POSITION_ABSOLUTE_CHANGE);
         float percentageChange = cursor.getFloat(Contract.Quote.POSITION_PERCENTAGE_CHANGE);
+
+        // Initialize the interface with the data
+        holder.symbol.setText(symbol);
+        holder.price.setText(price);
 
         if (rawAbsoluteChange > 0)
             holder.change.setBackgroundResource(R.drawable.percent_change_pill_green);
         else
             holder.change.setBackgroundResource(R.drawable.percent_change_pill_red);
 
-        String change = dollarFormatWithPlus.format(rawAbsoluteChange);
-        String percentage = percentageFormat.format(percentageChange / 100);
-
         if (PrefUtils.getDisplayMode(context).equals(context.getString(R.string.pref_display_mode_absolute_key)))
-            holder.change.setText(change);
+            holder.change.setText(dollarFormatWithPlus.format(rawAbsoluteChange));
         else
-            holder.change.setText(percentage);
+            holder.change.setText(percentageFormat.format(percentageChange / 100));
     }
 
     @Override
@@ -85,12 +85,15 @@ class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
         return cursor != null ? cursor.getCount() : 0;
     }
 
+    // -------------------------- INTERFACE --------------------------
+
     interface StockAdapterOnClickHandler {
         void onClick(String symbol);
     }
 
-    class StockViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    // ------------------------- VIEW HOLDER -------------------------
 
+    class StockViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.symbol) TextView symbol;
         @BindView(R.id.price) TextView price;
         @BindView(R.id.change) TextView change;
