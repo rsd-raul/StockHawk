@@ -14,12 +14,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.udacity.stockhawk.R;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class AddStockDialog extends DialogFragment {
 
@@ -58,20 +55,18 @@ public class AddStockDialog extends DialogFragment {
         Dialog dialog = builder.create();
 
         Window window = dialog.getWindow();
-        if (window != null) {
+        if (window != null)
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        }
 
         return dialog;
     }
 
     private void addStock() {
         Activity parent = getActivity();
-        if (parent instanceof MainActivity) {
+
+        if (parent instanceof MainActivity)
             ((MainActivity) parent).addStock(stock.getText().toString());
-        }
+
         dismissAllowingStateLoss();
     }
-
-
 }

@@ -117,18 +117,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     void addStock(String symbol) {
-        if (symbol != null && !symbol.isEmpty()) {
+        if (symbol == null || symbol.isEmpty())
+            return;
 
-            if (networkUp()) {
-                swipeRefreshLayout.setRefreshing(true);
-            } else {
-                String message = getString(R.string.toast_stock_added_no_connectivity, symbol);
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-            }
-
-            PrefUtils.addStock(this, symbol);
-            QuoteSyncJob.syncImmediately(this);
+        if (networkUp()) {
+            swipeRefreshLayout.setRefreshing(true);
+        } else {
+            String message = getString(R.string.toast_stock_added_no_connectivity, symbol);
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
+
+        PrefUtils.addStock(this, symbol);
+        QuoteSyncJob.syncImmediately(this);
     }
 
     @Override
@@ -143,9 +143,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         swipeRefreshLayout.setRefreshing(false);
 
-        if (data.getCount() != 0) {
+        if (data.getCount() != 0)
             error.setVisibility(View.GONE);
-        }
+
         adapter.setCursor(data);
     }
 
@@ -158,12 +158,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     private void setDisplayModeMenuItemIcon(MenuItem item) {
-        if (PrefUtils.getDisplayMode(this)
-                .equals(getString(R.string.pref_display_mode_absolute_key))) {
+        if (PrefUtils.getDisplayMode(this).equals(getString(R.string.pref_display_mode_absolute_key)))
             item.setIcon(R.drawable.ic_percentage);
-        } else {
+        else
             item.setIcon(R.drawable.ic_dollar);
-        }
     }
 
     @Override
@@ -176,14 +174,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_change_units) {
-            PrefUtils.toggleDisplayMode(this);
-            setDisplayModeMenuItemIcon(item);
-            adapter.notifyDataSetChanged();
-            return true;
+        switch (item.getItemId()){
+            case R.id.action_change_units:
+                PrefUtils.toggleDisplayMode(this);
+                setDisplayModeMenuItemIcon(item);
+                adapter.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }
