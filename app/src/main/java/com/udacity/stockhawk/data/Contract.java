@@ -1,9 +1,7 @@
 package com.udacity.stockhawk.data;
 
-
 import android.net.Uri;
 import android.provider.BaseColumns;
-
 import com.google.common.collect.ImmutableList;
 
 public final class Contract {
@@ -13,8 +11,7 @@ public final class Contract {
     static final String PATH_QUOTE_WITH_SYMBOL = "quote/*";
     private static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
 
-    private Contract() {
-    }
+    private Contract() {}
 
     @SuppressWarnings("unused")
     public static final class Quote implements BaseColumns {
