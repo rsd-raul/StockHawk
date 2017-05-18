@@ -38,13 +38,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     // ------------------------- ATTRIBUTES --------------------------
 
-    //    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.recycler_view) RecyclerView stockRecyclerView;
-//    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
-//    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.error) TextView error;
     private StockAdapter adapter;
+
+    // ------------------------- CONSTRUCTOR -------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,21 +78,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }).attachToRecyclerView(stockRecyclerView);
     }
 
+    // -------------------------- USE CASES --------------------------
+
     @Override
     public void onClick(String symbol) {
         Timber.d("Symbol clicked: %s", symbol);
     }
 
-    private boolean networkUp() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnectedOrConnecting();
-    }
-
     @Override
     public void onRefresh() {
-
         QuoteSyncJob.syncImmediately(this);
 
         if (!networkUp() && adapter.getItemCount() == 0) {
@@ -112,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    public void button(@SuppressWarnings("UnusedParameters") View view) {
+    public void button(View view) {
         new AddStockDialog().show(getFragmentManager(), "StockDialogFragment");
     }
 
@@ -120,9 +113,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (symbol == null || symbol.isEmpty())
             return;
 
-        if (networkUp()) {
+        if (networkUp())
             swipeRefreshLayout.setRefreshing(true);
-        } else {
+        else {
             String message = getString(R.string.toast_stock_added_no_connectivity, symbol);
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
@@ -148,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         adapter.setCursor(data);
     }
-
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
@@ -183,5 +175,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    // -------------------------- AUXILIARY --------------------------
+
+    private boolean networkUp() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 }
