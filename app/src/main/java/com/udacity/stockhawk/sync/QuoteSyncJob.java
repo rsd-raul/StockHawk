@@ -8,10 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
+import android.widget.Toast;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
-
+import com.udacity.stockhawk.mock.MockUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,14 +71,26 @@ public final class QuoteSyncJob {
                 Stock stock = quotes.get(symbol);
                 StockQuote quote = stock.getQuote();
 
+                if(quote == null || quote.getPrice() == null) {
+                    Toast.makeText(context, "Stock not found on our servers, try again.", Toast.LENGTH_SHORT).show();
+                    //FIXME stop the spinner
+                    //FIXME check if Toast is shown
+                    return;
+                }
+
                 float price = quote.getPrice().floatValue();
                 float change = quote.getChange().floatValue();
                 float percentChange = quote.getChangeInPercent().floatValue();
 
-                // FIXME if possible
-                // WARNING! Don't request historical data for a stock that doesn't exist!
-                // The request will hang forever X_x
-                List<HistoricalQuote> history = stock.getHistory(from, to, Interval.WEEKLY);
+//                // WARNING! Don't request historical data for a stock that doesn't exist!
+//                // The request will hang forever X_x
+//                List<HistoricalQuote> history = stock.getHistory(from, to, Interval.WEEKLY);
+
+                // Note for reviewr
+                // Due to problems with Yahoo APi we have commented the line above and included this
+                // one to fetch the history from MockUtils.
+                // This should be enought as to develop and review while the API is down
+                List<HistoricalQuote> history = MockUtils.getHistory();
 
                 StringBuilder historyBuilder = new StringBuilder();
 
