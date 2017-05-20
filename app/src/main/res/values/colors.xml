@@ -8,4 +8,10 @@
     <color name="material_red_700">#D50000</color>
     <color name="material_green_700">#00C853</color>
 
+
+    <color name="graph_fill">#2d374c</color>
+    <color name="graph_fixed_dot">#ffc755</color>
+    <color name="graph_fixed_line">#b3b5bb</color>
+    <color name="graph_dynamic_dot_line">#758cbb</color>
+
 </resources>
